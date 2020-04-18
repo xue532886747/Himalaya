@@ -7,15 +7,101 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/main_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
-
     <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/app_act_main_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="11"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white_242242" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_home"
+            style="@style/AppBottomMainLlStyle">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/app_main_bottom_icon_home_select" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/AppBottomMainTvStyle"
+                android:text="首页"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_hear"
+            style="@style/AppBottomMainLlStyle">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/app_main_bottom_icon_notice_select" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/AppBottomMainTvStyle"
+                android:text="我听"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_play"
+            style="@style/AppBottomMainLlStyle">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/app_main_bottom_icon_record_select" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/AppBottomMainTvStyle"
+                android:text="播放"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_find"
+            style="@style/AppBottomMainLlStyle">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/app_main_bottom_icon_find_select" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/AppBottomMainTvStyle"
+                android:text="发现"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mine"
+            style="@style/AppBottomMainLlStyle">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/app_main_bottom_icon_mine_select" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/AppBottomMainTvStyle"
+                android:text="我的"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

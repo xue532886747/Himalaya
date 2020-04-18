@@ -51,13 +51,12 @@ public class MainPresenter implements IMainPresenter {
     public void getMainTitle() {
         Map<String, String> map = new HashMap<String, String>();
         CommonRequest.getCategories(map, new IDataCallBack<CategoryList>() {
-
-
             @Override
             public void onSuccess(@Nullable CategoryList categoryList) {
                 if (categoryList != null) {
                     List<Category> categories = categoryList.getCategories();
                     handlerTitleResult(categories);
+
 //                    for (Category category : categories) {
 //                        mList.add(category.getCategoryName());
 //

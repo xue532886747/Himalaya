@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/ll_item"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:background="@drawable/rect_vice_title"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_vice_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="作死小能手"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_vice_text"
+            android:layout_width="22dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/usually_sanjiao_down"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

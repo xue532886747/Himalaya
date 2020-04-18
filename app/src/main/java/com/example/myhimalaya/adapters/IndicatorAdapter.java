@@ -59,7 +59,7 @@ public class IndicatorAdapter extends CommonNavigatorAdapter {
     @Override
     public IPagerIndicator getIndicator(Context context) {
         BezierPagerIndicator indicator = new BezierPagerIndicator(context);
-        indicator.setColors(R.color.red_f51600);
+        indicator.setColors(Color.parseColor("#ed6d04"), Color.parseColor("#ed6d04"), Color.parseColor("#ed6d04"), Color.parseColor("#ed6d04"), Color.parseColor("#ed6d04"), Color.parseColor("#ed6d04"));
         return indicator;
     }
 
