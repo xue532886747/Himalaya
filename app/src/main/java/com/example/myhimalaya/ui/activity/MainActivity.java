@@ -21,7 +21,15 @@ import com.jaeger.library.StatusBarUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbums;
+import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbumsList;
+import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
+import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
+import com.ximalaya.ting.android.opensdk.model.banner.RankBannerList;
+import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
+import com.ximalaya.ting.android.opensdk.model.metadata.MetaDataList;
 import com.ximalaya.ting.android.opensdk.model.tag.Tag;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
 
@@ -53,7 +61,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void initView() {
         immersive();
-        AdapterUtil.setCustomDensity(this,getApplication());        //适配
+        AdapterUtil.setCustomDensity(this, getApplication());        //适配
         mView_pager = findViewById(R.id.app_act_main_vp);
         ll_home = findViewById(R.id.ll_home);
         ll_hear = findViewById(R.id.ll_hear);
@@ -99,7 +107,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             //首页
             case R.id.ll_home:
-
                 setPageSelected(0, ll_home);
                 break;
             //我听
@@ -189,15 +196,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
      */
     private void initTitle() {
 
-        Map<String, String> map1 = new HashMap<String, String>();
-        map1.put(DTransferConstants.CATEGORY_ID, "2");
-        map1.put(DTransferConstants.TYPE, "0");
-        CommonRequest.getTags(map1, new IDataCallBack<TagList>() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.CATEGORY_ID, "2");
+        map.put(DTransferConstants.DISPLAY_COUNT, "20");
+        CommonRequest.getCategoryRecommendAlbums(map, new IDataCallBack<CategoryRecommendAlbumsList>() {
             @Override
-            public void onSuccess(@Nullable TagList tagList) {
-                assert tagList != null;
-                List<Tag> list = tagList.getTagList();
-                LogUtil.d(TAG, "tagList = " + list.toString());
+            public void onSuccess(@Nullable CategoryRecommendAlbumsList categoryRecommendAlbumsList) {
+                List<CategoryRecommendAlbums> categoryRecommendAlbumses = categoryRecommendAlbumsList.getCategoryRecommendAlbumses();
+//                iTitleCallBack.getCommand(categoryRecommendAlbumses);
+
             }
 
             @Override
@@ -206,22 +213,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         });
 
+//        /**
+//         * 这个对应的是经典老歌等
+//         */
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put(DTransferConstants.CATEGORY_ID, "2");
+//        map.put(DTransferConstants.TAG_NAME, "老歌");
+//        map.put(DTransferConstants.CALC_DIMENSION, "1");
+//        CommonRequest.getAlbumList(map, new IDataCallBack<AlbumList>() {
+//            @Override
+//            public void onSuccess(@Nullable AlbumList albumList) {
+//                List<Album> albums = albumList.getAlbums();
+//
+//            }
+//
+//            @Override
+//            public void onError(int i, String s) {
+//                LogUtil.d(TAG, "tagList1 = " + "i = " + i + ",s = " + s);
+//            }
+//        });
 
-        Map<String, String> map2 = new HashMap<String, String>();
-        map2.put(DTransferConstants.CATEGORY_ID, "2");
-        map2.put(DTransferConstants.TAG_NAME, "欧美");
-        map2.put(DTransferConstants.CALC_DIMENSION, "1");
-        CommonRequest.getAlbumList(map2, new IDataCallBack<AlbumList>() {
-            @Override
-            public void onSuccess(@Nullable AlbumList albumList) {
-                LogUtil.d(TAG, "albumList = " + albumList.toString());
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
-            }
-        });
     }
 
     /**

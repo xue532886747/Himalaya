@@ -11,12 +11,14 @@ import com.example.myhimalaya.adapters.MainTitleViewPagerAdapter;
 import com.example.myhimalaya.base.BaseFragment;
 import com.example.myhimalaya.interfaces.IMainCallBack;
 import com.example.myhimalaya.presenter.MainPresenter;
-import com.example.myhimalaya.ui.fragment.shouye_fragment.MainAmuseMentFragment;
-import com.example.myhimalaya.ui.fragment.shouye_fragment.MainGameFragment;
-import com.example.myhimalaya.ui.fragment.shouye_fragment.MainHistoryFragment;
+import com.example.myhimalaya.ui.fragment.shouye_fragment.ShouyeAmuseMentFragment;
+import com.example.myhimalaya.ui.fragment.shouye_fragment.ShouyeGameFragment;
+import com.example.myhimalaya.ui.fragment.shouye_fragment.ShouyeHistoryFragment;
 import com.example.myhimalaya.ui.fragment.shouye_fragment.ShouyeMusicFragment;
-import com.example.myhimalaya.ui.fragment.shouye_fragment.MainSoundBookFragment;
-import com.example.myhimalaya.ui.fragment.shouye_fragment.MainTalkShowFragment;
+import com.example.myhimalaya.ui.fragment.shouye_fragment.ShouyeSoundBookFragment;
+import com.example.myhimalaya.ui.fragment.shouye_fragment.ShouyeTalkShowFragment;
+import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
+import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.category.Category;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -40,21 +42,21 @@ public class MainFragment extends BaseFragment implements IMainCallBack {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private MainPresenter mainPresenter;
     private ShouyeMusicFragment shouyeMusicFragment;
-    private MainHistoryFragment mainHistoryFragment;
-    private MainTalkShowFragment mainTalkShowFragment;
-    private MainAmuseMentFragment mainAmuseMentFragment;
-    private MainGameFragment mainGameFragment;
-    private MainSoundBookFragment mainSoundBookFragment;
+    private ShouyeHistoryFragment shouyeHistoryFragment;
+    private ShouyeTalkShowFragment shouyeTalkShowFragment;
+    private ShouyeAmuseMentFragment shouyeAmuseMentFragment;
+    private ShouyeGameFragment shouyeGameFragment;
+    private ShouyeSoundBookFragment shouyeSoundBookFragment;
 
     @Override
     public void initView(View mView) {
         setFragment();
         mFragments.add(shouyeMusicFragment);
-        mFragments.add(mainHistoryFragment);
-        mFragments.add(mainTalkShowFragment);
-        mFragments.add(mainAmuseMentFragment);
-        mFragments.add(mainGameFragment);
-        mFragments.add(mainSoundBookFragment);
+        mFragments.add(shouyeHistoryFragment);
+        mFragments.add(shouyeTalkShowFragment);
+        mFragments.add(shouyeAmuseMentFragment);
+        mFragments.add(shouyeGameFragment);
+        mFragments.add(shouyeSoundBookFragment);
         setTitle();
         mMagicIndicator = mView.findViewById(R.id.main_indicator);
         mView_pager = mView.findViewById(R.id.view_pager);
@@ -71,16 +73,17 @@ public class MainFragment extends BaseFragment implements IMainCallBack {
         ViewPagerHelper.bind(mMagicIndicator, mView_pager);
         mainPresenter = MainPresenter.getsInstance();
         mainPresenter.registerViewCallBack(this);
-        mainPresenter.getMainTitle();
+        mainPresenter.getMainTitle();           //获取小标题
+
     }
 
     private void setFragment() {
         shouyeMusicFragment = new ShouyeMusicFragment();
-        mainHistoryFragment = new MainHistoryFragment();
-        mainTalkShowFragment = new MainTalkShowFragment();
-        mainAmuseMentFragment = new MainAmuseMentFragment();
-        mainGameFragment = new MainGameFragment();
-        mainSoundBookFragment = new MainSoundBookFragment();
+        shouyeHistoryFragment = new ShouyeHistoryFragment();
+        shouyeTalkShowFragment = new ShouyeTalkShowFragment();
+        shouyeAmuseMentFragment = new ShouyeAmuseMentFragment();
+        shouyeGameFragment = new ShouyeGameFragment();
+        shouyeSoundBookFragment = new ShouyeSoundBookFragment();
     }
 
     @Override
@@ -117,6 +120,7 @@ public class MainFragment extends BaseFragment implements IMainCallBack {
 
         }
     }
+
 
     @Override
     public void onDestroy() {
