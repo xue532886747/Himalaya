@@ -3,7 +3,9 @@ package com.example.myhimalaya.ui.fragment.main_fragment;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.myhimalaya.R;
 import com.example.myhimalaya.adapters.IndicatorAdapter;
@@ -47,6 +49,13 @@ public class MainFragment extends BaseFragment implements IMainCallBack {
     private ShouyeAmuseMentFragment shouyeAmuseMentFragment;
     private ShouyeGameFragment shouyeGameFragment;
     private ShouyeSoundBookFragment shouyeSoundBookFragment;
+
+    @Override
+    protected View onSubViewLoaded(LayoutInflater inflater, ViewGroup container) {
+        mContext = getActivity();
+        View view = inflater.inflate(R.layout.main_fragment_main, container, false);
+        return view;
+    }
 
     @Override
     public void initView(View mView) {
@@ -108,11 +117,11 @@ public class MainFragment extends BaseFragment implements IMainCallBack {
     }
 
 
-    @Override
-    public int getLayoutId() {
-        mContext = getActivity();
-        return R.layout.main_fragment_main;
-    }
+//    @Override
+//    public int getLayoutId() {
+//        mContext = getActivity();
+//        return R.layout.main_fragment_main;
+//    }
 
     @Override
     public void onMainTitleListLoad(List<Category> list) {

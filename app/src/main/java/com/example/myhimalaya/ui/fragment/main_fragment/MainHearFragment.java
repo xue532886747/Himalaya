@@ -1,11 +1,19 @@
 package com.example.myhimalaya.ui.fragment.main_fragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.myhimalaya.R;
 import com.example.myhimalaya.base.BaseFragment;
 
 public class MainHearFragment extends BaseFragment {
+    @Override
+    protected View onSubViewLoaded(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.main_fragment_shouye, container, false);
+        return view;
+    }
+
     @Override
     public void initView(View mView) {
 
@@ -16,8 +24,8 @@ public class MainHearFragment extends BaseFragment {
 
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.main_fragment_shouye;
-    }
+//    @Override
+//    public int getLayoutId() {
+//        return R.layout.main_fragment_shouye;
+//    }
 }

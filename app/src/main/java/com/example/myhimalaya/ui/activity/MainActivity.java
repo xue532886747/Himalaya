@@ -26,12 +26,14 @@ import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbums;
 import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbumsList;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.banner.RankBannerList;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 import com.ximalaya.ting.android.opensdk.model.metadata.MetaDataList;
 import com.ximalaya.ting.android.opensdk.model.tag.Tag;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
+import com.ximalaya.ting.android.opensdk.model.track.TrackHotList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -191,27 +193,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    /**
-     * 此接口用于获取点播资源的内容分类，如：“有声小说”、“相声评书”等。 这块要抽出来了
-     */
+
     private void initTitle() {
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CATEGORY_ID, "2");
-        map.put(DTransferConstants.DISPLAY_COUNT, "20");
-        CommonRequest.getCategoryRecommendAlbums(map, new IDataCallBack<CategoryRecommendAlbumsList>() {
-            @Override
-            public void onSuccess(@Nullable CategoryRecommendAlbumsList categoryRecommendAlbumsList) {
-                List<CategoryRecommendAlbums> categoryRecommendAlbumses = categoryRecommendAlbumsList.getCategoryRecommendAlbumses();
-//                iTitleCallBack.getCommand(categoryRecommendAlbumses);
 
-            }
 
-            @Override
-            public void onError(int i, String s) {
-
-            }
-        });
+//        Map<String, String> map1 = new HashMap<String, String>();
+//        map1.put(DTransferConstants.ALBUMID, "30613477");
+//        CommonRequest.getRelativeAlbums(map1, new IDataCallBack<RelativeAlbums>() {
+//            @Override
+//            public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
+//                List<Album> relativeAlbumList = relativeAlbums.getRelativeAlbumList();
+//
+//            }
+//
+//            @Override
+//            public void onError(int i, String s) {
+//
+//            }
+//        });
 
 //        /**
 //         * 这个对应的是经典老歌等

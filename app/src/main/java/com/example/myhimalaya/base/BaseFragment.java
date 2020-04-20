@@ -8,15 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment {
-    View mView;
+    public View mView;
     boolean isLoad = false;
     boolean isInit = false;
 
+    /**
+     * initUIView();
+     * if (mView == null) {
+     * mView = inflater.inflate(getLayoutId(), container, false);
+     * }
+     * isInit = true;
+     * initView(mView);
+     * initEvent();
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (mView == null)
-            mView = inflater.inflate(getLayoutId(), container, false);
+
+        if (mView == null) {
+            mView = onSubViewLoaded(inflater,container);
+        }
         isInit = true;
         initView(mView);
         initEvent();
@@ -24,9 +35,14 @@ public abstract class BaseFragment extends Fragment {
         return mView;
     }
 
+    protected abstract View onSubViewLoaded(LayoutInflater inflater, ViewGroup container);
+
+
+
     public abstract void initView(View mView);
 
     public abstract void initEvent();
+
     /**
      * 视图是否已经对用户可见，系统的方法
      */
@@ -74,5 +90,5 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    public abstract int getLayoutId();
+
 }

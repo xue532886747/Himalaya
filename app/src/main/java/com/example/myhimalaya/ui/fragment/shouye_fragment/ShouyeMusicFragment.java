@@ -4,15 +4,19 @@ import android.content.Context;
 
 import android.graphics.Rect;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.myhimalaya.R;
 
 import com.example.myhimalaya.adapters.AllClassificationAdapter;
+import com.example.myhimalaya.adapters.HotTracksAdapter;
 import com.example.myhimalaya.adapters.ViceTitleAdapter;
 import com.example.myhimalaya.base.BaseFragment;
 import com.example.myhimalaya.bean.NewAlbumBean;
@@ -20,12 +24,15 @@ import com.example.myhimalaya.interfaces.ITitleCallBack;
 import com.example.myhimalaya.presenter.ViceTitlePresenter;
 import com.example.myhimalaya.utils.GlideImageLoader;
 import com.example.myhimalaya.utils.LogUtil;
+import com.example.myhimalaya.views.UILoader;
 import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbums;
 import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbumsList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.tag.Tag;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
+import com.ximalaya.ting.android.opensdk.model.track.TrackHotList;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
@@ -38,7 +45,7 @@ import java.util.List;
 /**
  * 音乐的fragment
  */
-public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack {
+public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack, UILoader.onRetryOnClickListener {
     private static final String TAG = "ShouyeMusicFragment";
     private Context mContext;
     private RecyclerView recycle_view_music;
@@ -49,16 +56,48 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
     private List<String> mBannerList = new ArrayList<>();
     private RecyclerView recycle_view_classification;
     private AllClassificationAdapter allClassificationAdapter;
-    private RecyclerView recycle_view_recommand;
+    private RecyclerView recycle_view_hottracks;
+    private HotTracksAdapter hotTracksAdapter;
+    private List<Track> tracksList = new ArrayList<>();
+    private UILoader uiLoader;
+
+
+    @Override
+    protected View onSubViewLoaded(LayoutInflater inflater, ViewGroup container) {
+        uiLoader = new UILoader(getContext()) {
+            @Override
+            protected View getSuccessView(ViewGroup container) {
+                return createSuccessView(inflater, container);
+            }
+        };
+        mContext = getActivity();
+        if (uiLoader.getParent() instanceof ViewGroup) {
+            ((ViewGroup) uiLoader.getParent()).removeView(uiLoader);
+        }
+
+        uiLoader.setOnRetryOnClickListener(this);
+        return uiLoader;
+    }
+
+//    @Override
+//    public int getLayoutId() {
+//        return R.layout.fg_have_sounds_book;
+//    }
 
     @Override
     public void initView(View mView) {
         mBanner = mView.findViewById(R.id.banner);
         initViewTitle(mView);
         initViewClassification(mView);
-        initViewRecommand(mView);
+        initViewHotTracks(mView);
         initViewPresenter();
     }
+
+    private View createSuccessView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fg_have_sounds_book, container, false);
+        return view;
+    }
+
 
     /**
      * 小标题的实例化
@@ -70,8 +109,6 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(mContext, 4);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycle_view_music.setLayoutManager(linearLayoutManager);
-        viceTitleAdapter = new ViceTitleAdapter(mContext);
-        recycle_view_music.setAdapter(viceTitleAdapter);
         recycle_view_music.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -79,6 +116,12 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
 
             }
         });
+        viceTitleAdapter = new ViceTitleAdapter(mContext);
+        recycle_view_music.setAdapter(viceTitleAdapter);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recycle_view_music.setHasFixedSize(true);
+        recycle_view_music.setNestedScrollingEnabled(false);
     }
 
     /**
@@ -91,8 +134,6 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycle_view_classification.setLayoutManager(linearLayoutManager);
-        allClassificationAdapter = new AllClassificationAdapter(mContext);
-        recycle_view_classification.setAdapter(allClassificationAdapter);
         recycle_view_classification.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -100,27 +141,40 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
 
             }
         });
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recycle_view_music.setHasFixedSize(true);
+        recycle_view_music.setNestedScrollingEnabled(false);
+        allClassificationAdapter = new AllClassificationAdapter(mContext);
+        recycle_view_classification.setAdapter(allClassificationAdapter);
     }
 
 
     /**
-     * 推荐的实例化
+     * 热门实例化
      *
      * @param mView
      */
-    private void initViewRecommand(View mView) {
-        recycle_view_recommand = mView.findViewById(R.id.recycle_view_recommand);
+    private void initViewHotTracks(View mView) {
+        recycle_view_hottracks = mView.findViewById(R.id.recycle_view_hottracks);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recycle_view_recommand.setLayoutManager(linearLayoutManager);
-        recycle_view_recommand.addItemDecoration(new RecyclerView.ItemDecoration() {
+        recycle_view_hottracks.setLayoutManager(linearLayoutManager);
+        recycle_view_hottracks.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 outRect.bottom = UIUtil.dip2px(view.getContext(), 10);
 
             }
         });
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recycle_view_music.setHasFixedSize(true);
+        recycle_view_music.setNestedScrollingEnabled(false);
+        hotTracksAdapter = new HotTracksAdapter(mContext);
+        recycle_view_hottracks.setAdapter(hotTracksAdapter);
     }
+
 
     /**
      * presenter的实例化
@@ -131,7 +185,7 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
         viceTitlePresenter.getViceTitle("2", "0");
         viceTitlePresenter.getBanner("2");
         viceTitlePresenter.getCategoryRecommend("2");
-
+        viceTitlePresenter.getTrackHot("2", 1, 20);
     }
 
     @Override
@@ -149,11 +203,6 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
         });
     }
 
-    @Override
-    public int getLayoutId() {
-        mContext = getActivity();
-        return R.layout.fg_have_sounds_book;
-    }
 
     @Override
     public void getViceTitleLoad(TagList tagList) {
@@ -173,6 +222,7 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
 
     @Override
     public void getBannerLoad(BannerV2List bann) {
+        LogUtil.d(TAG, "走了几次");
         if (mBannerList != null) {
             mBannerList.clear();
         }
@@ -189,29 +239,41 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
         mBanner.setDelayTime(2000);
         mBanner.setIndicatorGravity(BannerConfig.CENTER);
         mBanner.start();
-        mBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                LogUtil.d(TAG, "1mBannerList = " + mBannerList.get(i));
-                LogUtil.d(TAG, "1mBannerList.size() = " + mBannerList.size());
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
     }
 
+    /**
+     * 推荐内容
+     *
+     * @param categoryRecommendAlbumses
+     */
     @Override
     public void getCategoryRecommend(List<CategoryRecommendAlbums> categoryRecommendAlbumses) {
         allClassificationAdapter.setData(categoryRecommendAlbumses);
         allClassificationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getHotTracks(TrackHotList trackHotList) {
+        List<Track> tracks = trackHotList.getTracks();
+        tracksList.addAll(tracks);
+        hotTracksAdapter.setData(tracksList);
+        hotTracksAdapter.notifyDataSetChanged();
+        uiLoader.updateStatus(UILoader.UIState.SUCCESS);
+    }
+
+    @Override
+    public void onNetWorkError() {
+        uiLoader.updateStatus(UILoader.UIState.NETWORK_ERROR);
+    }
+
+    @Override
+    public void onEmpty() {
+        uiLoader.updateStatus(UILoader.UIState.EMPTY);
+    }
+
+    @Override
+    public void onLoding() {
+        uiLoader.updateStatus(UILoader.UIState.LODING);
     }
 
 
@@ -219,5 +281,19 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack 
     public void onDestroy() {
         super.onDestroy();
         mBanner.stopAutoPlay();
+    }
+
+    /**
+     * 网络不佳的时候 用户点击重试
+     */
+    @Override
+    public void onRetryClick() {
+        if (viceTitlePresenter!=null) {
+            viceTitlePresenter.getViceTitle("2", "0");
+            viceTitlePresenter.getBanner("2");
+            viceTitlePresenter.getCategoryRecommend("2");
+            viceTitlePresenter.getTrackHot("2", 1, 20);
+        }
+
     }
 }

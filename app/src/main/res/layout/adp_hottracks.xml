@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <com.example.myhimalaya.views.RoundRectImageView
+        android:id="@+id/iv_cover_url_large"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/tv_kind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_cover_url_large"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toRightOf="@+id/iv_cover_url_large"
+        android:ellipsize="end"
+        android:lines="2"
+        android:text="123123"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_track_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_kind"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/iv_cover_url_large"
+        android:background="@drawable/rect_vice_title"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="123123123123123"
+        android:textSize="14sp" />
+
+</RelativeLayout>

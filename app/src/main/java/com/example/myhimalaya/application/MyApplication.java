@@ -1,12 +1,16 @@
 package com.example.myhimalaya.application;
 
 import android.app.Application;
+import android.os.Handler;
 
 import com.example.myhimalaya.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 
+
 public class MyApplication extends Application {
+    private static Handler sHandler = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,5 +36,11 @@ public class MyApplication extends Application {
             mXimalaya.setPackid("com.example.myhimalaya");
             mXimalaya.init(this, mAppSecret);
         }
+        sHandler = new Handler();
     }
+
+    public static Handler getsHandler() {
+        return sHandler;
+    }
+
 }

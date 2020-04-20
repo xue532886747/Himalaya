@@ -23,15 +23,14 @@ public interface ITtilePresenter {
      */
     void getCategoryRecommend(String category_id);
 
-
     /**
-     * 获取运营人员为某个分类配置的标签维度专辑推荐模块列表
+     * 此接口用于获取某个分类某个声音下的热门声音列表
      *
      * @param category_id
-     * @param display_count
+     * @param page        返回第几页，必须大于等于1，不填默认为1
+     * @param count       每页多少条，默认20，最多不超过200
      */
-
-    void getCommand(String category_id, String display_count);
+    void getTrackHot(String category_id, int page, int count);
 
     void setViceCallBack(ITitleCallBack iTitleCallBack);
 

@@ -16,6 +16,7 @@ import com.ximalaya.ting.android.opensdk.model.album.CategoryRecommendAlbumsList
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.tag.Tag;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
+import com.ximalaya.ting.android.opensdk.model.track.TrackHotList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,9 +100,38 @@ public class ViceTitlePresenter implements ITtilePresenter {
     }
 
     @Override
-    public void getCommand(String category_id, String display_count) {
+    public void getTrackHot(String category_id, int page, int count) {
+        upDataOnLoading();
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.CATEGORY_ID, category_id);
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(count));
+        map.put(DTransferConstants.PAGE, String.valueOf(page));
+        CommonRequest.getHotTracks(map, new IDataCallBack<TrackHotList>() {
+            @Override
+            public void onSuccess(@Nullable TrackHotList trackHotList) {
+                assert trackHotList != null;
+                if (trackHotList.getTracks().size() == 0) {
+                    iTitleCallBack.onEmpty();
+                } else {
+                    iTitleCallBack.getHotTracks(trackHotList);
+                }
+            }
 
+            @Override
+            public void onError(int i, String s) {
+                handlerError();
+            }
+        });
     }
+
+    private void upDataOnLoading() {
+        iTitleCallBack.onLoding();
+    }
+
+    private void handlerError() {
+        iTitleCallBack.onNetWorkError();
+    }
+
 
     @Override
     public void setViceCallBack(ITitleCallBack iTitleCallBack) {

@@ -5,7 +5,9 @@ import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.myhimalaya.R;
 import com.example.myhimalaya.adapters.ViceTitleAdapter;
@@ -20,6 +22,7 @@ import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.tag.Tag;
 import com.ximalaya.ting.android.opensdk.model.tag.TagList;
+import com.ximalaya.ting.android.opensdk.model.track.TrackHotList;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
@@ -38,6 +41,13 @@ public class ShouyeSoundBookFragment extends BaseFragment  implements ITitleCall
     private int mNumber;
     private Banner mBanner;
     private List<String> mBannerList = new ArrayList<>();
+
+    @Override
+    protected View onSubViewLoaded(LayoutInflater inflater, ViewGroup container) {
+        mContext = getActivity();
+        View view = inflater.inflate(R.layout.fg_have_sounds_book, container, false);
+        return view;
+    }
 
     @Override
     public void initView(View mView) {
@@ -76,11 +86,11 @@ public class ShouyeSoundBookFragment extends BaseFragment  implements ITitleCall
         });
     }
 
-    @Override
-    public int getLayoutId() {
-        mContext = getActivity();
-        return R.layout.fg_have_sounds_book;
-    }
+//    @Override
+//    public int getLayoutId() {
+//        mContext = getActivity();
+//        return R.layout.fg_have_sounds_book;
+//    }
 
     @Override
     public void getViceTitleLoad(TagList tagList) {
@@ -118,6 +128,26 @@ public class ShouyeSoundBookFragment extends BaseFragment  implements ITitleCall
 
     @Override
     public void getCategoryRecommend(List<CategoryRecommendAlbums> categoryRecommendAlbumses) {
+
+    }
+
+    @Override
+    public void getHotTracks(TrackHotList trackHotList) {
+
+    }
+
+    @Override
+    public void onNetWorkError() {
+
+    }
+
+    @Override
+    public void onEmpty() {
+
+    }
+
+    @Override
+    public void onLoding() {
 
     }
 
