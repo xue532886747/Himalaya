@@ -2,6 +2,7 @@ package com.example.myhimalaya.ui.fragment.shouye_fragment;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -22,6 +23,7 @@ import com.example.myhimalaya.base.BaseFragment;
 import com.example.myhimalaya.bean.NewAlbumBean;
 import com.example.myhimalaya.interfaces.ITitleCallBack;
 import com.example.myhimalaya.presenter.ViceTitlePresenter;
+import com.example.myhimalaya.ui.activity.AlbumAcitvity;
 import com.example.myhimalaya.utils.GlideImageLoader;
 import com.example.myhimalaya.utils.LogUtil;
 import com.example.myhimalaya.views.UILoader;
@@ -190,6 +192,13 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack,
 
     @Override
     public void initEvent() {
+        viceTitleAdapter.setOnTagItemClickListener(new ViceTitleAdapter.onTagItemClickListener() {
+            @Override
+            public void position(int position) {
+
+            }
+        });
+
         viceTitleAdapter.setOnFoldClickListener(new ViceTitleAdapter.onFoldClickListener() {
             @Override
             public void isFold(boolean isFold) {
@@ -199,6 +208,13 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack,
                     viceTitleAdapter.setFoldNumber(0);
                 }
                 viceTitleAdapter.notifyDataSetChanged();
+            }
+        });
+        allClassificationAdapter.setOnAlbumOnClickListener(new AllClassificationAdapter.onAlbumOnClickListener() {
+            @Override
+            public void position(int position) {
+                Intent intent = new Intent(mContext, AlbumAcitvity.class);
+                startActivity(intent);
             }
         });
     }
@@ -222,7 +238,6 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack,
 
     @Override
     public void getBannerLoad(BannerV2List bann) {
-        LogUtil.d(TAG, "走了几次");
         if (mBannerList != null) {
             mBannerList.clear();
         }
@@ -230,6 +245,7 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack,
         LogUtil.d(TAG, "TAG 原来的数据等于 = " + bannerV2s.size());
         for (BannerV2 bannerV2 : bannerV2s) {
             mBannerList.add(bannerV2.getBannerUrl());
+            LogUtil.d(TAG, TAG + "TAG for次数 = " + mBannerList.size());
         }
         LogUtil.d(TAG, TAG + "TAG 重新创建的集合 = " + mBannerList.size());
         mBanner.setImageLoader(new GlideImageLoader());
@@ -288,12 +304,11 @@ public class ShouyeMusicFragment extends BaseFragment implements ITitleCallBack,
      */
     @Override
     public void onRetryClick() {
-        if (viceTitlePresenter!=null) {
+        if (viceTitlePresenter != null) {
             viceTitlePresenter.getViceTitle("2", "0");
             viceTitlePresenter.getBanner("2");
             viceTitlePresenter.getCategoryRecommend("2");
             viceTitlePresenter.getTrackHot("2", 1, 20);
         }
-
     }
 }

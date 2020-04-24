@@ -1,9 +1,12 @@
 package com.example.myhimalaya.ui.activity;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -53,6 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private MainPlayFragment mainPlayFragment;
     private MainFindFragment mainFindFragment;
     private MainMineFragment mainMineFragment;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected int setLayoutId() {
@@ -64,6 +68,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void initView() {
         immersive();
         AdapterUtil.setCustomDensity(this, getApplication());        //适配
+        bottomNavigationView = findViewById(R.id.main_navigation_bar);
         mView_pager = findViewById(R.id.app_act_main_vp);
         ll_home = findViewById(R.id.ll_home);
         ll_hear = findViewById(R.id.ll_hear);
@@ -101,7 +106,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ll_find.setOnClickListener(this);
         ll_mine.setOnClickListener(this);
         mView_pager.addOnPageChangeListener(this);
-
     }
 
     @Override
@@ -195,7 +199,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     private void initTitle() {
-
 
 
 //        Map<String, String> map1 = new HashMap<String, String>();

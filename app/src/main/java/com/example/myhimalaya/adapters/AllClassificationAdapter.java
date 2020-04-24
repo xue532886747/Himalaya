@@ -1,6 +1,7 @@
 package com.example.myhimalaya.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -129,6 +130,15 @@ public class AllClassificationAdapter extends RecyclerView.Adapter {
             viewHolder1.tv_album_intro.setText(gList.get(position).getAlbumTitle());
             viewHolder1.tv_play_count.setText(gList.get(position).getPlayCount() + "");
             Glide.with(mContext).load(gList.get(position).getCoverUrlLarge()).into(viewHolder1.iv_cover_url_large);
+            viewHolder1.iv_cover_url_large.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    onAlbumOnClickListener.position(position);
+                    LogUtil.d(TAG, "富文本" + gList.get(position).toString());
+
+                }
+            });
             return convertView;
         }
 
@@ -136,8 +146,16 @@ public class AllClassificationAdapter extends RecyclerView.Adapter {
             private TextView tv_album_intro;        //专辑简介
             private TextView tv_play_count;            //专辑播放次数
             private ImageView iv_cover_url_large;   //专辑封面大，无则返回空字符串""
-
         }
+    }
 
+    public interface onAlbumOnClickListener {
+        void position(int position);
+    }
+
+    private onAlbumOnClickListener onAlbumOnClickListener;
+
+    public void setOnAlbumOnClickListener(onAlbumOnClickListener onAlbumOnClickListener) {
+        this.onAlbumOnClickListener = onAlbumOnClickListener;
     }
 }

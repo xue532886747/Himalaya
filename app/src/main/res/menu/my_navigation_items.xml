@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@mipmap/main_home_select_no"
+        android:title="@string/text_home">
+    </item>
+    <item
+        android:id="@+id/hear"
+        android:icon="@mipmap/main_my_hear_select_no"
+        android:title="@string/text_hear">
+    </item>
+    <item
+        android:id="@+id/play"
+        android:icon="@mipmap/main_play_select_no"
+        android:title="@string/text_play">
+    </item>
+    <item
+        android:id="@+id/find"
+        android:icon="@mipmap/main_find_select_no"
+        android:title="@string/text_find">
+    </item>
+    <item
+        android:id="@+id/mine"
+        android:icon="@mipmap/main_mine_select_no"
+        android:title="@string/text_mine">
+    </item>
+</menu>

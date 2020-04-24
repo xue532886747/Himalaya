@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myhimalaya.R;
@@ -60,9 +61,20 @@ public class ViceTitleAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).tv_vice_text.setText(List.get(position).getTagName());
                 ((ViewHolder) holder).tv_vice_text.setVisibility(View.VISIBLE);
                 ((ViewHolder) holder).iv_vice_text.setVisibility(View.GONE);
+                ((ViewHolder) holder).ll_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogUtil.d(TAG, "position = " + position);
+                        Toast.makeText(mContext, position + "", Toast.LENGTH_SHORT).show();
+                        if (onTagItemClickListener != null) {
+                            onTagItemClickListener.position(position);
+                        }
+                    }
+                });
             } else {
                 ((ViewHolder) holder).tv_vice_text.setVisibility(View.GONE);
                 ((ViewHolder) holder).iv_vice_text.setVisibility(View.VISIBLE);
+
                 if (isFold) {
                     Glide.with(mContext).load(R.mipmap.usually_sanjiao_up).into(((ViewHolder) holder).iv_vice_text);
                 } else {
@@ -94,6 +106,17 @@ public class ViceTitleAdapter extends RecyclerView.Adapter {
 
     public void setOnFoldClickListener(ViceTitleAdapter.onFoldClickListener onFoldClickListener) {
         this.onFoldClickListener = onFoldClickListener;
+    }
+
+
+    public interface onTagItemClickListener {
+        void position(int position);
+    }
+
+    private onTagItemClickListener onTagItemClickListener;
+
+    public void setOnTagItemClickListener(ViceTitleAdapter.onTagItemClickListener onTagItemClickListener) {
+        this.onTagItemClickListener = onTagItemClickListener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

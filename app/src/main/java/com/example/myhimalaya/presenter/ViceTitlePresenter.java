@@ -30,6 +30,10 @@ public class ViceTitlePresenter implements ITtilePresenter {
 
 
     @Override
+    public void setViceCallBack(ITitleCallBack iTitleCallBack) {
+        this.iTitleCallBack = iTitleCallBack;
+    }
+    @Override
     public void getViceTitle(String category_id, String type) {
         Map<String, String> map1 = new HashMap<String, String>();
         map1.put(DTransferConstants.CATEGORY_ID, category_id);
@@ -133,8 +137,4 @@ public class ViceTitlePresenter implements ITtilePresenter {
     }
 
 
-    @Override
-    public void setViceCallBack(ITitleCallBack iTitleCallBack) {
-        this.iTitleCallBack = iTitleCallBack;
-    }
 }

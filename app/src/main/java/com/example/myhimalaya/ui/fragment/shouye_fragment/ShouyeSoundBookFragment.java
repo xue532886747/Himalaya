@@ -73,17 +73,17 @@ public class ShouyeSoundBookFragment extends BaseFragment  implements ITitleCall
 
     @Override
     public void initEvent() {
-        viceTitleAdapter.setOnFoldClickListener(new ViceTitleAdapter.onFoldClickListener() {
-            @Override
-            public void isFold(boolean isFold) {
-                if (isFold) {       //true 需要折叠
-                    viceTitleAdapter.setFoldNumber(mNumber);
-                } else {              //需要打开
-                    viceTitleAdapter.setFoldNumber(0);
-                }
-                viceTitleAdapter.notifyDataSetChanged();
-            }
-        });
+//        viceTitleAdapter.setOnFoldClickListener(new ViceTitleAdapter.onFoldClickListener() {
+//            @Override
+//            public void isFold(boolean isFold) {
+//                if (isFold) {       //true 需要折叠
+//                    viceTitleAdapter.setFoldNumber(mNumber);
+//                } else {              //需要打开
+//                    viceTitleAdapter.setFoldNumber(0);
+//                }
+//                viceTitleAdapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
 //    @Override
